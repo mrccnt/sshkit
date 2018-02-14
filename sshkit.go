@@ -25,7 +25,7 @@ import (
 )
 
 type (
-	// This is the config needed to create a tunnel
+	// SSHTunnel is the config needed to create a tunnel
 	SSHTunnel struct {
 		Local  *Endpoint
 		Server *Endpoint
