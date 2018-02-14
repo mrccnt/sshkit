@@ -25,12 +25,14 @@ import (
 )
 
 type (
+	// This is the config needed to create a tunnel
 	SSHTunnel struct {
 		Local  *Endpoint
 		Server *Endpoint
 		Remote *Endpoint
 		Config *ssh.ClientConfig
 	}
+	// Endpoint defines a host and port
 	Endpoint struct {
 		Host string
 		Port int
@@ -82,7 +84,7 @@ func SFTPClient(sshClient *ssh.Client) (*sftp.Client, error) {
 	return c, nil
 }
 
-// String returns the prefered ssh package address format
+// String returns the preferred ssh package address format
 func (endpoint *Endpoint) String() string {
 	return fmt.Sprintf("%s:%d", endpoint.Host, endpoint.Port)
 }
