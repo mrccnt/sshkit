@@ -15,28 +15,10 @@
 package sshkit
 
 import (
-	"fmt"
-	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"
-	"io"
 	"net"
 	"os"
-)
-
-type (
-	// SSHTunnel is the config needed to create a tunnel
-	SSHTunnel struct {
-		Local  *Endpoint
-		Server *Endpoint
-		Remote *Endpoint
-		Config *ssh.ClientConfig
-	}
-	// Endpoint defines a host and port
-	Endpoint struct {
-		Host string
-		Port int
-	}
 )
 
 // SSHConfig returns a ssh.ClientConfig for given parameters
@@ -73,60 +55,4 @@ func AgentAuth() ssh.AuthMethod {
 		panic(err.Error())
 	}
 	return ssh.PublicKeysCallback(agent.NewClient(a).Signers)
-}
-
-// SFTPClient returns a client to handle any SFTP actions for given SSH Client
-func SFTPClient(sshClient *ssh.Client) (*sftp.Client, error) {
-	c, err := sftp.NewClient(sshClient)
-	if err != nil {
-		return nil, nil
-	}
-	return c, nil
-}
-
-// String returns the preferred ssh package address format
-func (endpoint *Endpoint) String() string {
-	return fmt.Sprintf("%s:%d", endpoint.Host, endpoint.Port)
-}
-
-// Start initializes the tunnel and starts a forwarding (blocking)
-func (tunnel *SSHTunnel) Start() error {
-	l, err := net.Listen("tcp", tunnel.Local.String())
-	if err != nil {
-		return err
-	}
-	defer l.Close()
-	for {
-		local, err := l.Accept()
-		if err != nil {
-			return err
-		}
-		go tunnel.forward(local)
-	}
-}
-
-// forward handles any incoming/outgoing reader/writer for this tunnel
-func (tunnel *SSHTunnel) forward(local net.Conn) {
-
-	server, err := ssh.Dial("tcp", tunnel.Server.String(), tunnel.Config)
-	if err != nil {
-		fmt.Printf("Server dial error: %s\n", err)
-		return
-	}
-
-	remote, err := server.Dial("tcp", tunnel.Remote.String())
-	if err != nil {
-		fmt.Printf("Remote dial error: %s\n", err)
-		return
-	}
-
-	copyConn := func(writer, reader net.Conn) {
-		_, err := io.Copy(writer, reader)
-		if err != nil {
-			fmt.Printf("io.Copy error: %s", err)
-		}
-	}
-
-	go copyConn(local, remote)
-	go copyConn(remote, local)
 }

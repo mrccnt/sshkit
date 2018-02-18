@@ -21,6 +21,7 @@ package main
 import (
 	"github.com/mrccnt/sshkit"
 	"golang.org/x/crypto/ssh"
+	"fmt"
 	"os"
 )
 
@@ -44,22 +45,18 @@ func main() {
 	}
 	defer sftpClient.Close()
 
-	srcFile, err := sftpClient.Open("path/on/remote/to/file.md")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer srcFile.Close()
+	bytes, err := sshkit.Pull(sftpClient, "remote/src/file.md", "local/dst/file.md")
+    if err != nil {
+        fmt.Println(err.Error())
+    }
+    fmt.Println(bytes, "bytes written on local filesystem")
 
-	dstFile, err := os.Create("path/on/local/to/copy.md")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer dstFile.Close()
-
-	_, err = srcFile.WriteTo(dstFile)
-	if err != nil {
-		panic(err.Error())
-	}
+    bytes, err = sshkit.Push(sftpClient, "local/src/file.md", "remote/dst/file.md")
+    if err != nil {
+        fmt.Println(err.Error())
+    }
+    fmt.Println(bytes, "bytes written on remote storage")
+    
 }
 ```
 
