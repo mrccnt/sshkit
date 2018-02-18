@@ -27,36 +27,36 @@ import (
 
 func main() {
 
-	sshClient, err := sshkit.SSHClient(
-		sshkit.SSHConfig(
-			"username",
-			[]ssh.AuthMethod{sshkit.AgentAuth()},
-		),
-		"domain.tld:22",
-	)
-	if err != nil {
-		panic(err.Error())
-	}
-	defer sshClient.Close()
-
-	sftpClient, err := sshkit.SFTPClient(sshClient)
-	if err != nil {
-		panic(err.Error())
-	}
-	defer sftpClient.Close()
-
-	bytes, err := sshkit.Pull(sftpClient, "remote/src/file.md", "local/dst/file.md")
+    sshClient, err := sshkit.SSHClient(
+        sshkit.SSHConfig(
+            "username",
+            []ssh.AuthMethod{sshkit.AgentAuth()},
+        ),
+        "domain.tld:22",
+    )
+    if err != nil {
+        panic(err.Error())
+    }
+    defer sshClient.Close()
+    
+    sftpClient, err := sshkit.SFTPClient(sshClient)
+    if err != nil {
+        panic(err.Error())
+    }
+    defer sftpClient.Close()
+    
+    bytes, err := sshkit.Pull(sftpClient, "remote/src/file.md", "local/dst/file.md")
     if err != nil {
         fmt.Println(err.Error())
     }
     fmt.Println(bytes, "bytes written on local filesystem")
-
+    
     bytes, err = sshkit.Push(sftpClient, "local/src/file.md", "remote/dst/file.md")
     if err != nil {
         fmt.Println(err.Error())
     }
     fmt.Println(bytes, "bytes written on remote storage")
-    
+
 }
 ```
 
