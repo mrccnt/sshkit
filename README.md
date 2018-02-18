@@ -47,13 +47,13 @@ func main() {
     
     bytes, err := sshkit.Pull(sftpClient, "remote/src/file.md", "local/dst/file.md")
     if err != nil {
-        fmt.Println(err.Error())
+        panic(err.Error())
     }
     fmt.Println(bytes, "bytes written on local filesystem")
     
     bytes, err = sshkit.Push(sftpClient, "local/src/file.md", "remote/dst/file.md")
     if err != nil {
-        fmt.Println(err.Error())
+        panic(err.Error())
     }
     fmt.Println(bytes, "bytes written on remote storage")
 
