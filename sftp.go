@@ -93,11 +93,11 @@ func Exists(client *sftp.Client, path string) (bool, error) {
 //
 // Use OS_ constants to define the permissions flag:
 //
-// if sshkit.HasOsAttrib(info, sshkit.OS_USER_R) {
+// if sshkit.HasOsAttrib(info, sshkit.OsUserR) {
 // 		// This file is readable for user
 // }
 //
-// if !sshkit.HasOsAttrib(info, sshkit.OS_GROUP_W) {
+// if !sshkit.HasOsAttrib(info, sshkit.OsGroupW) {
 // 		// This file is NOT writable for group members
 // }
 //

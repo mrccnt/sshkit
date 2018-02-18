@@ -16,35 +16,36 @@ package sshkit
 
 // https://stackoverflow.com/questions/28969455/golang-properly-instantiate-os-filemode
 
+// File permission attributes (linux)
 const (
-	OS_READ        = 04
-	OS_WRITE       = 02
-	OS_EX          = 01
-	OS_USER_SHIFT  = 6
-	OS_GROUP_SHIFT = 3
-	OS_OTH_SHIFT   = 0
+	OsRead       = 04
+	OsWrite      = 02
+	OsEx         = 01
+	OsUserShift  = 6
+	OsGroupShift = 3
+	OsOthShift   = 0
 
-	OS_USER_R   = OS_READ << OS_USER_SHIFT
-	OS_USER_W   = OS_WRITE << OS_USER_SHIFT
-	OS_USER_X   = OS_EX << OS_USER_SHIFT
-	OS_USER_RW  = OS_USER_R | OS_USER_W
-	OS_USER_RWX = OS_USER_RW | OS_USER_X
+	OsUserR   = OsRead << OsUserShift
+	OsUserW   = OsWrite << OsUserShift
+	OsUserX   = OsEx << OsUserShift
+	OsUserRw  = OsUserR | OsUserW
+	OsUserRwx = OsUserRw | OsUserX
 
-	OS_GROUP_R   = OS_READ << OS_GROUP_SHIFT
-	OS_GROUP_W   = OS_WRITE << OS_GROUP_SHIFT
-	OS_GROUP_X   = OS_EX << OS_GROUP_SHIFT
-	OS_GROUP_RW  = OS_GROUP_R | OS_GROUP_W
-	OS_GROUP_RWX = OS_GROUP_RW | OS_GROUP_X
+	OsGroupR   = OsRead << OsGroupShift
+	OsGroupW   = OsWrite << OsGroupShift
+	OsGroupX   = OsEx << OsGroupShift
+	OsGroupRw  = OsGroupR | OsGroupW
+	OsGroupRwx = OsGroupRw | OsGroupX
 
-	OS_OTH_R   = OS_READ << OS_OTH_SHIFT
-	OS_OTH_W   = OS_WRITE << OS_OTH_SHIFT
-	OS_OTH_X   = OS_EX << OS_OTH_SHIFT
-	OS_OTH_RW  = OS_OTH_R | OS_OTH_W
-	OS_OTH_RWX = OS_OTH_RW | OS_OTH_X
+	OsOthR   = OsRead << OsOthShift
+	OsOthW   = OsWrite << OsOthShift
+	OsOthX   = OsEx << OsOthShift
+	OsOthRw  = OsOthR | OsOthW
+	OsOthRwx = OsOthRw | OsOthX
 
-	OS_ALL_R   = OS_USER_R | OS_GROUP_R | OS_OTH_R
-	OS_ALL_W   = OS_USER_W | OS_GROUP_W | OS_OTH_W
-	OS_ALL_X   = OS_USER_X | OS_GROUP_X | OS_OTH_X
-	OS_ALL_RW  = OS_ALL_R | OS_ALL_W
-	OS_ALL_RWX = OS_ALL_RW | OS_GROUP_X
+	OsAllR   = OsUserR | OsGroupR | OsOthR
+	OsAllW   = OsUserW | OsGroupW | OsOthW
+	OsAllX   = OsUserX | OsGroupX | OsOthX
+	OsAllRw  = OsAllR | OsAllW
+	OsAllRwx = OsAllRw | OsGroupX
 )
